@@ -1,45 +1,53 @@
 #include "lists.h"
 
 /**
- * insert_nodeint_at_index - inserts a new node in a linked list,
- * at a given position
- * @head: pointer to the first node in the list
- * @idx: index where the new node is added
- * @n: data to insert in the new node
- *
- * Return: pointer to the new node, or NULL
+ * insert_nodeint_at_index - inserts a new node at a given position
+ * @head: pointer
+ * @idx : ist where the new node should be added
+ * @n : data of the list
+ * Return: address of the new node, or NULL if it failed
  */
+
 listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
 {
-	unsigned int i;
-	listint_t *new;
-	listint_t *temp = *head;
+	/*Declaring variables and lists*/
+	listint_t *new_node, *temp = *head;
+	unsigned int i = 0;
 
-	new = malloc(sizeof(listint_t));
-	if (!new || !head)
+	/*Using malloc for list new_node*/
+	new_node = malloc(sizeof(listint_t));
+
+	/*Evaluate new_node*/
+	if (new_node == NULL)
 		return (NULL);
 
-	new->n = n;
-	new->next = NULL;
+	/*Assign data*/
+	new_node->n = n;
+	new_node->next = NULL;
 
+	/*if idx is 0 so return value head*/
 	if (idx == 0)
 	{
-		new->next = *head;
-		*head = new;
-		return (new);
+		new_node->next = *head;
+		*head = new_node;
+		return (new_node);
 	}
 
-	for (i = 0; temp && i < idx; i++)
+	/*WHILE It determines how far it prints the positions*/
+	while (i < (idx - 1))
 	{
-		if (i == idx - 1)
-		{
-			new->next = temp->next;
-			temp->next = new;
-			return (new);
-		}
-		else
-			temp = temp->next;
+		temp = temp->next;
+
+		/*not possible to add the new node at index*/
+		if (temp == NULL && (idx - i) > 0)
+			return (NULL);
+
+		i++;
 	}
 
-	return (NULL);
+	/*Swap*/
+	new_node->next = temp->next;
+	temp->next = new_node;
+
+	return (new_node);
 }
